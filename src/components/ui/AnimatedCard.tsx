@@ -9,8 +9,7 @@ interface AnimatedCardProps {
   children?: React.ReactNode;
   className?: string;
   delay?: number;
-  colSpan?: number;
-  rowSpan?: number;
+  containterClassName?: string;
 }
 
 export function AnimatedCard({
@@ -20,18 +19,16 @@ export function AnimatedCard({
   children,
   className,
   delay = 0,
-  colSpan = 1,
-  rowSpan = 1,
+  containterClassName,
 }: AnimatedCardProps) {
 
-  const colSpanClass = colSpan ? `col-span-${colSpan}` : "col-span-1";
-  const rowSpanClass = rowSpan ? `row-span-${rowSpan}` : "row-span-1";
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay }}
-      className={`${colSpanClass} ${rowSpanClass}`}
+      className={containterClassName}
     >
       <Link
         to={to}

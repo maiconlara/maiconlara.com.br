@@ -37,7 +37,6 @@ const Index = () => {
           title="About"
           description="Take a look into my career."
           delay={0.2}
-          className="row-span-2"
         >
           <div className="space-y-3 mt-4">
             {careerItems.map((item, index) => (
@@ -63,7 +62,7 @@ const Index = () => {
           title="Projects"
           description="Some of my recent works"
           delay={0.3}
-          rowSpan={2}
+          containterClassName="row-span-2"
         >
           <div className="flex gap-2 mt-4">
             <div className="flex-1 h-24 rounded-lg bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
@@ -81,7 +80,7 @@ const Index = () => {
             title="Languages & Tools"
             description="Technologies I work with"
             delay={0.4}
-            colSpan={2}
+            containterClassName="col-span-2"
           >
             <div className="flex gap-2 mt-4 flex-wrap">
               {["Next.js", "TypeScript", "React", "Node.js"].map((tech) => (
@@ -100,7 +99,7 @@ const Index = () => {
             title="Contact"
             description="Lets talk!"
             delay={0.6}
-            colSpan={1}
+            containterClassName="col-span-1"
           >
             <div className="flex items-center gap-2 mt-4 text-primary">
               <span className="text-sm">Get in touch</span>
