@@ -23,15 +23,15 @@ export function AnimatedCard({
   colSpan = 1,
   rowSpan = 1,
 }: AnimatedCardProps) {
+
+  const colSpanClass = colSpan ? `col-span-${colSpan}` : "col-span-1";
+  const rowSpanClass = rowSpan ? `row-span-${rowSpan}` : "row-span-1";
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay }}
-      className={
-        `${colSpan ? `col-span-${colSpan}` : ""}` +
-        (rowSpan ? ` row-span-${rowSpan}` : "")
-      }
+      className={`${colSpanClass} ${rowSpanClass}`}
     >
       <Link
         to={to}
