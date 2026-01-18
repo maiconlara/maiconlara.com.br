@@ -1,7 +1,11 @@
-import { Link, useLocation } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import logo from "@/assets/logo.png";
+import Image from "next/image";
 
 const navItems = [
   { path: "/", label: "Home" },
@@ -11,7 +15,7 @@ const navItems = [
 ];
 
 export function Header() {
-  const location = useLocation();
+  const pathname = usePathname();
 
   return (
     <motion.header
@@ -22,26 +26,28 @@ export function Header() {
     >
       <div className="container flex items-center justify-between h-16">
         <Link
-          to="/"
+          href="/"
           className="font-semibold text-lg hover:text-primary transition-colors"
         >
-          <img
+          <Image
             src={logo}
             className="inline-block w-auto h-9 rounded-xl"
             alt="Maicon Lara"
+            width={36}
+            height={36}
           />
         </Link>
 
         <nav className="flex items-center gap-6">
           {navItems.map((item) => {
             const isActive =
-              location.pathname === item.path ||
-              (item.path !== "/" && location.pathname.startsWith(item.path));
+              pathname === item.path ||
+              (item.path !== "/" && pathname?.startsWith(item.path));
 
             return (
               <Link
                 key={item.path}
-                to={item.path}
+                href={item.path}
                 className={cn(
                   "relative py-1 text-sm transition-colors",
                   isActive

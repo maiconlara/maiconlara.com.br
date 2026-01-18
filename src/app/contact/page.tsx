@@ -1,8 +1,9 @@
+"use client";
+
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 import { useState } from "react";
-import { usePageTitle } from "@/hooks/use-page-title";
 import {
   RiArrowLeftLine,
   RiGithubLine,
@@ -10,9 +11,9 @@ import {
   RiMailLine,
   RiMapPinLine,
   RiSendPlaneLine,
-  RiTwitterLine,
 } from "@remixicon/react";
 import { toast } from "@/hooks/use-toast";
+import { Metadata } from "next";
 
 const socialLinks = [
   {
@@ -36,9 +37,11 @@ const socialLinks = [
   },
 ];
 
-export default function Contact() {
-  usePageTitle("Contact");
+export const metadata: Metadata = {
+  title: "Contact",
+};
 
+export default function ContactPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -60,7 +63,7 @@ export default function Contact() {
     <div className="container pb-16 md:pb-0 pt-10">
       <div className="mb-12">
         <Link
-          to="/"
+          href="/"
           className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8"
         >
           <RiArrowLeftLine className="w-4 h-4" />

@@ -1,7 +1,9 @@
+"use client";
+
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { usePageTitle } from "@/hooks/use-page-title";
+import Link from "next/link";
 import { RiArrowLeftLine } from "@remixicon/react";
+import { Metadata } from "next";
 
 const techCategories = [
   {
@@ -37,13 +39,16 @@ const techCategories = [
   },
 ];
 
-export default function Stack() {
-  usePageTitle("Languages & Tools");
+export const metadata: Metadata = {
+  title: "Stack",
+};
+
+export default function StackPage() {
   return (
     <div className="container pb-16 md:pb-24 pt-10">
       <div className="mb-12">
         <Link
-          to="/about"
+          href="/about"
           className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8"
         >
           <RiArrowLeftLine className="w-4 h-4" />

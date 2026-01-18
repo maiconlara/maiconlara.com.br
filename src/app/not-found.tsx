@@ -1,19 +1,10 @@
-import { Link, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+"use client";
+
+import Link from "next/link";
 import { motion } from "framer-motion";
-import { usePageTitle } from "@/hooks/use-page-title";
 import { RiHomeLine } from "@remixicon/react";
 
-const NotFound = () => {
-  usePageTitle("404 Not Found");
-  const location = useLocation();
-  useEffect(() => {
-    console.error(
-      "404 Error: User attempted to access non-existent route:",
-      location.pathname,
-    );
-  }, [location.pathname]);
-
+export default function NotFound() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
       <motion.div
@@ -34,7 +25,7 @@ const NotFound = () => {
           The page you're looking for doesn't exist or has been moved.
         </p>
         <Link
-          to="/"
+          href="/"
           className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
         >
           <RiHomeLine className="w-4 h-4" />
@@ -43,6 +34,4 @@ const NotFound = () => {
       </motion.div>
     </div>
   );
-};
-
-export default NotFound;
+}

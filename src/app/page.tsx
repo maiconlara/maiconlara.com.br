@@ -1,14 +1,15 @@
+"use client";
+
 import { motion } from "framer-motion";
 import { HeroSection } from "@/components/hero/HeroSection";
 import { AnimatedCard } from "@/components/ui/AnimatedCard";
-import { usePageTitle } from "@/hooks/use-page-title";
 import {
   RiArrowRightLine,
   RiBriefcaseLine,
   RiGraduationCapLine,
-  RiHeartLine,
 } from "@remixicon/react";
 import { Dashboard } from "@/components/ui/dashboard";
+import { Metadata } from "next";
 
 const careerItems = [
   {
@@ -25,8 +26,11 @@ const careerItems = [
   },
 ];
 
-const Index = () => {
-  usePageTitle("Home");
+export const metadata: Metadata = {
+  title: "Home",
+};
+
+export default function HomePage() {
   return (
     <div className="container pb-20">
       <HeroSection />
@@ -110,6 +114,4 @@ const Index = () => {
       </section>
     </div>
   );
-};
-
-export default Index;
+}

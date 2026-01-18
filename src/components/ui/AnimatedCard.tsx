@@ -1,5 +1,7 @@
+"use client";
+
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 interface AnimatedCardProps {
@@ -31,7 +33,7 @@ export function AnimatedCard({
       className={containterClassName}
     >
       <Link
-        to={to}
+        href={to}
         className={cn(
           "group block p-6 rounded-xl bg-card border border-border card-hover overflow-hidden h-full",
           className,

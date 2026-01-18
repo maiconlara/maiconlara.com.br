@@ -1,3 +1,5 @@
+"use client";
+
 import { TypeWriter } from "@/components/ui/TypeWriter";
 import { RiMapPinLine, RiWifiLine } from "@remixicon/react";
 

@@ -1,16 +1,18 @@
+"use client";
+
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { usePageTitle } from "@/hooks/use-page-title";
+import Link from "next/link";
 import {
   RiArrowLeftLine,
   RiArrowRightLine,
   RiBriefcaseLine,
   RiGraduationCapLine,
-  RiHeartLine,
 } from "@remixicon/react";
 import analitica from "@/assets/analitica.png";
 import belogic from "@/assets/belogic.png";
 import ufpr from "@/assets/ufpr.png";
+import Image from "next/image";
+import { Metadata } from "next";
 
 const timeline = [
   {
@@ -34,7 +36,7 @@ const timeline = [
   },
   {
     icon: RiGraduationCapLine,
-    title: "Bachelor’s Degree",
+    title: "Bachelor's Degree",
     role: "Systems Analysis and Development",
     period: "Feb 2022 - Nov 2024",
     description: "Federal University of Paraná (UFPR)",
@@ -51,13 +53,16 @@ const timeline = [
   },
 ];
 
-export default function About() {
-  usePageTitle("About");
+export const metadata: Metadata = {
+  title: "About",
+};
+
+export default function AboutPage() {
   return (
     <div className="container pb-16 md:pb-24 pt-10">
       <div className="mb-12">
         <Link
-          to="/"
+          href="/"
           className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8"
         >
           <RiArrowLeftLine className="w-4 h-4" />
@@ -111,12 +116,14 @@ export default function About() {
                     className={`flex items-center gap-3 mt-1 justify-start ${isLeft ? "md:justify-end" : "md:justify-start"}`}
                   >
                     {item.logo && (
-                      <img
+                      <Image
                         src={item.logo}
                         alt={`${item.title} logo`}
                         className={`size-10 rounded border border-border bg-white object-contain ${
                           isLeft ? "md:order-2" : "md:order-0"
                         }`}
+                        width={40}
+                        height={40}
                       />
                     )}
 
@@ -147,7 +154,7 @@ export default function About() {
         className="mt-16 text-center"
       >
         <Link
-          to="/about/stack"
+          href="/about/stack"
           className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
         >
           View my tech stack
