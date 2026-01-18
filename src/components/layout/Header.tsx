@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import logo from "@/assets/logo.png";
 
 const navItems = [
   { path: "/", label: "Home" },
@@ -19,20 +20,23 @@ export function Header() {
       transition={{ duration: 0.5 }}
       className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-background/80 border-b border-border/50"
     >
-      <div className="container flex items-center justify-end h-16">
+      <div className="container flex items-center justify-between h-16">
         <Link
           to="/"
-          className="font-semibold text-lg hover:text-primary transition-colors hidden"
+          className="font-semibold text-lg hover:text-primary transition-colors"
         >
-          Maicon Lara
+          <img
+            src={logo}
+            className="inline-block w-auto h-12 rounded-xl"
+            alt="Maicon Lara"
+          />
         </Link>
 
         <nav className="flex items-center gap-6">
           {navItems.map((item) => {
             const isActive =
               location.pathname === item.path ||
-              (item.path !== "/" &&
-                location.pathname.startsWith(item.path));
+              (item.path !== "/" && location.pathname.startsWith(item.path));
 
             return (
               <Link
@@ -42,7 +46,7 @@ export function Header() {
                   "relative py-1 text-sm transition-colors",
                   isActive
                     ? "text-foreground"
-                    : "text-muted-foreground hover:text-foreground"
+                    : "text-muted-foreground hover:text-foreground",
                 )}
               >
                 {item.label}
