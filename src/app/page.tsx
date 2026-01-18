@@ -7,9 +7,9 @@ import {
   RiArrowRightLine,
   RiBriefcaseLine,
   RiGraduationCapLine,
-  RiHeartLine,
 } from "@remixicon/react";
 import { Dashboard } from "@/components/ui/dashboard";
+import { Metadata } from "next";
 
 const careerItems = [
   {
@@ -25,6 +25,10 @@ const careerItems = [
     date: "Feb 2022 - Nov 2024",
   },
 ];
+
+export const metadata: Metadata = {
+  title: "Home",
+};
 
 export default function HomePage() {
   return (

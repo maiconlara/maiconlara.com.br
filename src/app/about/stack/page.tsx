@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { RiArrowLeftLine } from "@remixicon/react";
+import { Metadata } from "next";
 
 const techCategories = [
   {
@@ -37,6 +38,10 @@ const techCategories = [
     items: ["Figma", "Adobe XD", "Responsive Design", "UI/UX Principles"],
   },
 ];
+
+export const metadata: Metadata = {
+  title: "Stack",
+};
 
 export default function StackPage() {
   return (

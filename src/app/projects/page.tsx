@@ -7,6 +7,7 @@ import {
   RiExternalLinkLine,
   RiGithubLine,
 } from "@remixicon/react";
+import { Metadata } from "next";
 
 const projects = [
   {
@@ -42,6 +43,10 @@ const projects = [
     gradient: "from-green-500/20 to-emerald-500/20",
   },
 ];
+
+export const metadata: Metadata = {
+  title: "Projects",
+};
 
 export default function ProjectsPage() {
   return (

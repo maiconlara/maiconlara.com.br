@@ -12,6 +12,7 @@ import analitica from "@/assets/analitica.png";
 import belogic from "@/assets/belogic.png";
 import ufpr from "@/assets/ufpr.png";
 import Image from "next/image";
+import { Metadata } from "next";
 
 const timeline = [
   {
@@ -51,6 +52,10 @@ const timeline = [
     logo: belogic,
   },
 ];
+
+export const metadata: Metadata = {
+  title: "About",
+};
 
 export default function AboutPage() {
   return (

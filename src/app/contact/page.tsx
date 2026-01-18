@@ -13,6 +13,7 @@ import {
   RiSendPlaneLine,
 } from "@remixicon/react";
 import { toast } from "@/hooks/use-toast";
+import { Metadata } from "next";
 
 const socialLinks = [
   {
@@ -35,6 +36,10 @@ const socialLinks = [
     username: "maiconlaracontato@gmail.com",
   },
 ];
+
+export const metadata: Metadata = {
+  title: "Contact",
+};
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
