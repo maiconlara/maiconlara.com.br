@@ -5,7 +5,7 @@ import { Dashboard } from "@/components/ui/dashboard";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Home",
+  title: "Maicon Lara | Frontend & Fullstack Developer",
 };
 
 export default function HomePage() {
