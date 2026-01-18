@@ -27,7 +27,7 @@ export function Header() {
         >
           <img
             src={logo}
-            className="inline-block w-auto h-12 rounded-xl"
+            className="inline-block w-auto h-9 rounded-xl"
             alt="Maicon Lara"
           />
         </Link>
