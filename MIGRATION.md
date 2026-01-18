@@ -12,25 +12,25 @@ This project has been successfully migrated from React + Vite + TypeScript to **
 ### Project Structure
 ```
 Before (Vite):                After (Next.js 15):
-src/                          app/
-├── pages/                    ├── layout.tsx
-│   ├── Index.tsx             ├── page.tsx
-│   ├── About.tsx             ├── about/
-│   ├── Stack.tsx             │   ├── page.tsx
-│   ├── Projects.tsx          │   └── stack/
-│   ├── Contact.tsx           │       └── page.tsx
-│   └── NotFound.tsx          ├── projects/
-├── components/               │   └── page.tsx
-├── hooks/                    ├── contact/
-├── lib/                      │   └── page.tsx
-└── index.css                 ├── not-found.tsx
-                              ├── globals.css
-                              └── providers.tsx
-
-                              components/ (at root)
-                              hooks/ (at root)
-                              lib/ (at root)
-                              assets/ (at root)
+src/                          src/
+├── pages/                    ├── app/
+│   ├── Index.tsx             │   ├── layout.tsx
+│   ├── About.tsx             │   ├── page.tsx
+│   ├── Stack.tsx             │   ├── about/
+│   ├── Projects.tsx          │   │   ├── page.tsx
+│   ├── Contact.tsx           │   │   └── stack/
+│   └── NotFound.tsx          │   │       └── page.tsx
+├── components/               │   ├── projects/
+├── hooks/                    │   │   └── page.tsx
+├── lib/                      │   ├── contact/
+└── index.css                 │   │   └── page.tsx
+                              │   ├── not-found.tsx
+                              │   ├── globals.css
+                              │   └── providers.tsx
+                              ├── components/
+                              ├── hooks/
+                              ├── lib/
+                              └── assets/
 ```
 
 ### Configuration Files
@@ -50,10 +50,10 @@ Scripts updated:
 - Updated for Next.js with App Router
 - Added `incremental: true`
 - Added Next.js plugin
-- Updated paths to `@/*` pointing to root
+- Updated paths to `@/*` pointing to `./src/*`
 
 #### tailwind.config.ts
-- Updated content paths: `["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"]`
+- Updated content paths: `["./src/app/**/*.{ts,tsx}", "./src/components/**/*.{ts,tsx}"]`
 
 #### New Files
 - `next.config.ts` - Next.js configuration
