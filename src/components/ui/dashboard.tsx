@@ -8,6 +8,7 @@ import {
   RiGroupLine,
 } from "@remixicon/react";
 import { motion } from "framer-motion";
+import { useMemo } from "react";
 
 const stats = [
   { label: "Years of Experience", value: "3+", icon: RiCalendarLine },
@@ -35,6 +36,16 @@ const languages = [
 
 export function Dashboard() {
   const maxCommits = Math.max(...weeklyActivity.map((d) => d.commits));
+
+  // Gerar intensidades fixas para evitar hydration mismatch
+  const contributionData = useMemo(() => {
+    return Array.from({ length: 84 }, (_, i) => {
+      // Usar um padrão determinístico baseado no índice
+      const seed = (i * 2654435761) % 2147483647;
+      const intensity = (seed / 2147483647);
+      return intensity;
+    });
+  }, []);
 
   return (
     <div className="container px-0 pb-6">
@@ -132,26 +143,23 @@ export function Dashboard() {
       >
         <h3 className="font-semibold mb-4">Contribution Graph</h3>
         <div className="grid grid-cols-12 gap-1">
-          {Array.from({ length: 84 }).map((_, i) => {
-            const intensity = Math.random();
-            return (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.8 + i * 0.01 }}
-                className={`w-3 h-3 rounded-sm ${
-                  intensity > 0.7
-                    ? "bg-primary"
-                    : intensity > 0.4
-                      ? "bg-primary/60"
-                      : intensity > 0.2
-                        ? "bg-primary/30"
-                        : "bg-secondary"
-                }`}
-              />
-            );
-          })}
+          {contributionData.map((intensity, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.8 + i * 0.01 }}
+              className={`w-3 h-3 rounded-sm ${
+                intensity > 0.7
+                  ? "bg-primary"
+                  : intensity > 0.4
+                    ? "bg-primary/60"
+                    : intensity > 0.2
+                      ? "bg-primary/30"
+                      : "bg-secondary"
+              }`}
+            />
+          ))}
         </div>
       </motion.div>
     </div>
