@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   creator: "Maicon Lara",
 
   alternates: {
-    canonical: "/",
+    canonical: "https://maiconlara.com.br",
   },
 
   openGraph: {
