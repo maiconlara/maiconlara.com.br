@@ -18,7 +18,7 @@ export const Timeline = () => {
       icon: RiBriefcaseLine,
       title: "stays.net",
       role: "Full Stack Engineer",
-      period: "Fev 2026 - Present",
+      period: "Feb 2026 - Present",
       description: "Creating innovative web and mobile solutions.",
       current: true,
       logo: stays,
