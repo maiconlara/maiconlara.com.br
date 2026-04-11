@@ -11,6 +11,12 @@ import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { cn } from "@/lib/utils";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface ContributionCell {
   date: string;
@@ -23,7 +29,7 @@ interface GithubStats {
   yearsActive: number;
   followers: number;
   topLanguages: Array<{ name: string; percentage: number; color: string }>;
-  weeklyActivity: Array<{ day: string; commits: number }>;
+  weeklyActivity: Array<{ day: string; commits: number; date?: string }>;
   contribution: ContributionCell[];
   contributionTotal: number;
 }
@@ -76,11 +82,30 @@ export function Dashboard() {
     () => Math.max(...contribution.map((c) => c.count), 1),
     [contribution]
   );
-  const contributionWeeks = useMemo(() => {
-    const weeks: ContributionCell[][] = [];
-    for (let i = 0; i < contribution.length; i += 7) {
-      weeks.push(contribution.slice(i, i + 7));
+
+  // Group contributions into weeks of 7 slots aligned by UTC weekday
+  // (Sun=0 .. Sat=6). Missing days (partial first/last week) become nulls
+  // so the CSS grid stays aligned.
+  const contributionWeeks = useMemo<Array<Array<ContributionCell | null>>>(() => {
+    if (contribution.length === 0) return [];
+    const sorted = [...contribution].sort((a, b) =>
+      a.date.localeCompare(b.date)
+    );
+
+    const weeks: Array<Array<ContributionCell | null>> = [];
+    let currentWeek: Array<ContributionCell | null> = new Array(7).fill(null);
+    let currentWeekday = new Date(sorted[0].date).getUTCDay();
+
+    for (const day of sorted) {
+      const weekday = new Date(day.date).getUTCDay();
+      if (weekday < currentWeekday) {
+        weeks.push(currentWeek);
+        currentWeek = new Array(7).fill(null);
+      }
+      currentWeek[weekday] = day;
+      currentWeekday = weekday;
     }
+    weeks.push(currentWeek);
     return weeks;
   }, [contribution]);
 
@@ -90,7 +115,7 @@ export function Dashboard() {
     const labels: Record<number, string> = {};
     let last = "";
     contributionWeeks.forEach((week, i) => {
-      const first = week[0];
+      const first = week.find((d) => d !== null);
       if (!first) return;
       const month = new Date(first.date).toLocaleString("en-US", {
         month: "short",
@@ -174,27 +199,48 @@ export function Dashboard() {
             <h3 className="font-semibold">Weekly Activity</h3>
           </div>
 
-          <div className="flex items-end justify-between h-32 gap-2">
-            {weeklyActivity.map((day, index) => (
-              <motion.div
-                key={day.day}
-                initial={{ height: 0 }}
-                animate={{
-                  height: `${(day.commits / maxCommits) * 100}%`,
-                }}
-                transition={{ delay: 0.5 + index * 0.1, duration: 0.5 }}
-                className="flex-1 flex flex-col items-center gap-2"
-              >
-                <div
-                  className={`w-full rounded-t-md bg-gradient-to-t from-primary/50 to-primary ${
-                    isLoading ? "animate-pulse" : ""
-                  }`}
-                  style={{ height: "100%" }}
-                />
-                <span className="text-xs text-muted-foreground">{day.day}</span>
-              </motion.div>
-            ))}
-          </div>
+          <TooltipProvider delayDuration={80} skipDelayDuration={200}>
+            <div className="flex items-end justify-between h-32 gap-2">
+              {weeklyActivity.map((day, index) => {
+                // Ensure non-zero days always render a visible nub, while
+                // keeping proportions correct for larger values.
+                const ratio = day.commits / maxCommits;
+                const targetHeight =
+                  day.commits === 0 ? 0 : Math.max(ratio * 100, 8);
+
+                const label = day.date ? formatDate(day.date) : day.day;
+
+                return (
+                  <Tooltip key={day.day + index}>
+                    <TooltipTrigger asChild>
+                      <div className="flex-1 h-full flex flex-col items-center justify-end gap-2 cursor-default">
+                        <motion.div
+                          initial={{ height: 0 }}
+                          animate={{ height: `${targetHeight}%` }}
+                          transition={{
+                            delay: 0.5 + index * 0.1,
+                            duration: 0.5,
+                          }}
+                          className={`w-full rounded-t-md bg-gradient-to-t from-primary/50 to-primary ${
+                            isLoading ? "animate-pulse" : ""
+                          }`}
+                        />
+                        <span className="text-xs text-muted-foreground leading-none">
+                          {day.day}
+                        </span>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent side="top" className="text-xs">
+                      <span className="font-medium">
+                        {day.commits} commit{day.commits === 1 ? "" : "s"}
+                      </span>
+                      <span className="text-muted-foreground"> on {label}</span>
+                    </TooltipContent>
+                  </Tooltip>
+                );
+              })}
+            </div>
+          </TooltipProvider>
         </motion.div>
 
         {/* Languages */}
@@ -264,7 +310,7 @@ export function Dashboard() {
         </div>
 
         {isLoading ? (
-          <div className="h-[140px] rounded-md bg-secondary/40 animate-pulse" />
+          <div className="w-full aspect-[53/7] rounded-md bg-secondary/40 animate-pulse" />
         ) : contribution.length === 0 ? (
           <p className="text-sm text-muted-foreground py-10 text-center">
             Contribution data unavailable. A GitHub token with{" "}
@@ -274,63 +320,81 @@ export function Dashboard() {
             scope is required.
           </p>
         ) : (
-          <div className="overflow-x-auto">
-            <div className="inline-block min-w-full">
-              {/* Month labels */}
-              <div
-                className="grid gap-[3px] mb-1 text-[10px] text-muted-foreground pl-7"
-                style={{
-                  gridTemplateColumns: `repeat(${contributionWeeks.length}, 12px)`,
-                }}
-              >
-                {contributionWeeks.map((_, i) => (
-                  <span key={i} className="h-3 leading-3 whitespace-nowrap">
-                    {monthLabels[i] ?? ""}
-                  </span>
-                ))}
+          <TooltipProvider delayDuration={60} skipDelayDuration={200}>
+            <div className="w-full">
+              {/* Month labels — share the same column template as the heatmap
+                  so each label sits above its week column. pl compensates for
+                  the day-of-week labels to the left of the grid. */}
+              <div className="flex mb-1 ">
+                <div
+                  className="grid gap-[3px] text-[10px] text-muted-foreground w-full"
+                  style={{
+                    gridTemplateColumns: `repeat(${contributionWeeks.length}, minmax(0, 1fr))`,
+                  }}
+                >
+                  {contributionWeeks.map((_, i) => (
+                    <span
+                      key={i}
+                      className="leading-3 whitespace-nowrap overflow-visible"
+                    >
+                      {monthLabels[i] ?? ""}
+                    </span>
+                  ))}
+                </div>
               </div>
 
-              <div className="flex gap-1">
-                {/* Day-of-week labels (Mon / Wed / Fri) */}
-                <div className="grid grid-rows-7 gap-[3px] text-[10px] text-muted-foreground pr-1">
-                  <span className="h-3 leading-3" />
-                  <span className="h-3 leading-3">Mon</span>
-                  <span className="h-3 leading-3" />
-                  <span className="h-3 leading-3">Wed</span>
-                  <span className="h-3 leading-3" />
-                  <span className="h-3 leading-3">Fri</span>
-                  <span className="h-3 leading-3" />
-                </div>
+              <div className="flex gap-1 items-stretch w-full">
+                {/* Day-of-week labels — stretch to the graph's height via flex */}
+       
 
-                {/* Heatmap cells */}
-                <div className="grid grid-rows-7 grid-flow-col gap-[3px]">
+                {/* Heatmap — fills remaining width, height derived from
+                    aspect-ratio so cells stay square responsively */}
+                <div
+                  className="grid flex-1 min-w-0 gap-[3px]"
+                  style={{
+                    aspectRatio: `${contributionWeeks.length} / 7`,
+                    gridTemplateColumns: `repeat(${contributionWeeks.length}, minmax(0, 1fr))`,
+                    gridTemplateRows: "repeat(7, minmax(0, 1fr))",
+                    gridAutoFlow: "column",
+                  }}
+                >
                   {contributionWeeks.flatMap((week, wi) =>
-                    Array.from({ length: 7 }, (_, di) => {
-                      const day = week[di];
+                    week.map((day, di) => {
                       if (!day) {
                         return (
-                          <div
-                            key={`empty-${wi}-${di}`}
-                            className="w-3 h-3"
-                          />
+                          <div key={`empty-${wi}-${di}`} aria-hidden />
                         );
                       }
                       return (
-                        <motion.div
-                          key={`day.date-${wi}-${di}`}
-                          initial={{ opacity: 0, scale: 0 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{
-                            delay: 0.4 + (wi * 7 + di) * 0.003,
-                          }}
-                          title={`${day.count} contribution${
-                            day.count === 1 ? "" : "s"
-                          } on ${formatDate(day.date)}`}
-                          className={cn(
-                            "w-3 h-3 rounded-sm",
-                            intensityClass(day.count)
-                          )}
-                        />
+                        <Tooltip key={`${wi}-${di}-${day.date}`}>
+                          <TooltipTrigger asChild>
+                            <motion.div
+                              initial={{ opacity: 0, scale: 0.3 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              transition={{
+                                delay: 0.3 + (wi * 7 + di) * 0.002,
+                                duration: 0.2,
+                              }}
+                              className={cn(
+                                "rounded-[2px] cursor-default",
+                                intensityClass(day.count)
+                              )}
+                            />
+                          </TooltipTrigger>
+                          <TooltipContent
+                            side="top"
+                            className="text-xs px-2 py-1"
+                          >
+                            <span className="font-medium">
+                              {day.count} contribution
+                              {day.count === 1 ? "" : "s"}
+                            </span>
+                            <span className="text-muted-foreground">
+                              {" "}
+                              on {formatDate(day.date)}
+                            </span>
+                          </TooltipContent>
+                        </Tooltip>
                       );
                     })
                   )}
@@ -340,15 +404,15 @@ export function Dashboard() {
               {/* Legend */}
               <div className="flex items-center justify-end gap-1.5 mt-3 text-[10px] text-muted-foreground">
                 <span>Less</span>
-                <div className="w-3 h-3 rounded-sm bg-secondary" />
-                <div className="w-3 h-3 rounded-sm bg-primary/20" />
-                <div className="w-3 h-3 rounded-sm bg-primary/40" />
-                <div className="w-3 h-3 rounded-sm bg-primary/70" />
-                <div className="w-3 h-3 rounded-sm bg-primary" />
+                <div className="w-3 h-3 rounded-[2px] bg-secondary" />
+                <div className="w-3 h-3 rounded-[2px] bg-primary/20" />
+                <div className="w-3 h-3 rounded-[2px] bg-primary/40" />
+                <div className="w-3 h-3 rounded-[2px] bg-primary/70" />
+                <div className="w-3 h-3 rounded-[2px] bg-primary" />
                 <span>More</span>
               </div>
             </div>
-          </div>
+          </TooltipProvider>
         )}
       </motion.div>
     </div>

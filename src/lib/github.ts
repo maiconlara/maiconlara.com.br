@@ -98,6 +98,8 @@ export interface GithubLanguage {
 export interface GithubDayCommits {
   day: string;
   commits: number;
+  /** ISO date (YYYY-MM-DD). Only present when sourced from the calendar. */
+  date?: string;
 }
 
 export interface ContributionCell {
@@ -213,6 +215,7 @@ async function getContributionData(): Promise<ContributionData | null> {
     const weeklyActivity: GithubDayCommits[] = last7.map((d) => ({
       day: DAY_LABELS[new Date(d.date).getUTCDay()],
       commits: d.count,
+      date: d.date,
     }));
 
     // Contribution cells = full year (53 weeks * 7 days), week-then-day order.
