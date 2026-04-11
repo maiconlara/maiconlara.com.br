@@ -1,100 +1,148 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { RiExternalLinkLine, RiGithubLine } from "@remixicon/react";
+import { RiExternalLinkLine, RiGithubLine, RiStarLine } from "@remixicon/react";
+import { useQuery } from "@tanstack/react-query";
+import {
+  OUT_OF_GITHUB_REPOS,
+  type FeaturedRepo,
+} from "@/lib/featured-repos";
 
-const projects = [
-  {
-    title: "Project 1",
-    description: "-",
-    tech: ["React"],
-    github: "#",
-    live: "#",
-    gradient: "from-purple-500/20 to-pink-500/20",
-  },
-  {
-    title: "Project 2",
-    description: "-",
-    tech: ["Next.js"],
-    github: "#",
-    live: "#",
-    gradient: "from-blue-500/20 to-cyan-500/20",
-  },
-  {
-    title: "Project 3",
-    description: "-",
-    tech: ["React"],
-    github: "#",
-    live: "#",
-    gradient: "from-orange-500/20 to-red-500/20",
-  },
-  {
-    title: "Project 4",
-    description: "-",
-    tech: ["React"],
-    github: "#",
-    live: "#",
-    gradient: "from-green-500/20 to-emerald-500/20",
-  },
+const GRADIENTS = [
+  "from-purple-500/20 to-pink-500/20",
+  "from-blue-500/20 to-cyan-500/20",
+  "from-orange-500/20 to-red-500/20",
+  "from-green-500/20 to-emerald-500/20",
+  "from-indigo-500/20 to-violet-500/20",
+  "from-amber-500/20 to-yellow-500/20",
 ];
 
+const fetchRepos = async (): Promise<FeaturedRepo[]> => {
+  const res = await fetch("/api/github/repos?limit=4");
+  if (!res.ok) throw new Error("Failed to fetch GitHub repos");
+  return res.json();
+};
+
 export const Projects = () => {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["github-repos"],
+    queryFn: fetchRepos,
+    staleTime: 1000 * 60 * 30,
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
+
+  const projects = data && [...OUT_OF_GITHUB_REPOS, ...data];
+
   return (
     <>
       <div className="grid md:grid-cols-2 gap-6">
-        {projects.map((project, index) => (
-          <motion.article
-            key={project.title}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-            className="group relative overflow-hidden rounded-xl bg-card border border-border card-hover"
-          >
-            {/* Gradient background */}
+        {isLoading ? (
+          Array.from({ length: 4 }).map((_, i) => (
             <div
-              className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
-            />
-
-            <div className="relative p-6">
+              key={i}
+              className="relative overflow-hidden rounded-xl bg-card border border-border p-6"
+            >
               <div className="flex items-start justify-between mb-4">
-                <h3 className="text-xl font-semibold group-hover:text-primary transition-colors">
-                  {project.title}
-                </h3>
+                <div className="h-6 w-40 rounded bg-secondary animate-pulse" />
                 <div className="flex gap-2">
-                  <a
-                    href={project.github}
-                    className="p-2 rounded-lg bg-secondary hover:bg-primary hover:text-primary-foreground transition-colors"
-                    aria-label="View on GitHub"
-                  >
-                    <RiGithubLine className="w-4 h-4" />
-                  </a>
-                  <a
-                    href={project.live}
-                    className="p-2 rounded-lg bg-secondary hover:bg-primary hover:text-primary-foreground transition-colors"
-                    aria-label="View live site"
-                  >
-                    <RiExternalLinkLine className="w-4 h-4" />
-                  </a>
+                  <div className="h-8 w-8 rounded-lg bg-secondary animate-pulse" />
+                  <div className="h-8 w-8 rounded-lg bg-secondary animate-pulse" />
                 </div>
               </div>
-
-              <p className="text-muted-foreground text-sm mb-4">
-                {project.description}
-              </p>
-
-              <div className="flex flex-wrap gap-2">
-                {project.tech.map((tech) => (
-                  <span
-                    key={tech}
-                    className="px-2 py-1 rounded-md bg-secondary/50 text-xs text-muted-foreground"
-                  >
-                    {tech}
-                  </span>
-                ))}
+              <div className="space-y-2 mb-4">
+                <div className="h-3 w-full rounded bg-secondary animate-pulse" />
+                <div className="h-3 w-4/5 rounded bg-secondary animate-pulse" />
+              </div>
+              <div className="flex gap-2">
+                <div className="h-5 w-16 rounded-md bg-secondary animate-pulse" />
+                <div className="h-5 w-12 rounded-md bg-secondary animate-pulse" />
               </div>
             </div>
-          </motion.article>
-        ))}
+          ))
+        ) : isError || !data || data.length === 0 ? (
+          <p className="md:col-span-2 text-center text-muted-foreground py-12">
+            Could not load projects from GitHub right now.
+          </p>
+        ) : (
+          projects.map((project, index) => (
+            <motion.article
+              key={project.id}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              className="group relative overflow-hidden rounded-xl bg-card border border-border card-hover"
+            >
+              <div
+                className={`absolute inset-0 bg-gradient-to-br ${
+                  GRADIENTS[index % GRADIENTS.length]
+                } opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
+              />
+
+              <div className="relative p-6">
+                <div className="flex items-start justify-between mb-4 gap-4">
+                  <h3 className="text-xl font-semibold group-hover:text-primary transition-colors">
+                    {project.name}
+                  </h3>
+                  <div className="flex gap-2 shrink-0">
+                    {project.url && (
+                      <a
+                        href={project.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 rounded-lg bg-secondary hover:bg-primary hover:text-primary-foreground transition-colors"
+                        aria-label={`View ${project.name} on GitHub`}
+                      >
+                        <RiGithubLine className="w-4 h-4" />
+                      </a>
+                    )}
+                    {project.homepage && (
+                      <a
+                        href={project.homepage}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 rounded-lg bg-secondary hover:bg-primary hover:text-primary-foreground transition-colors"
+                        aria-label={`View ${project.name} live site`}
+                      >
+                        <RiExternalLinkLine className="w-4 h-4" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+
+                <p className="text-muted-foreground text-sm mb-4 line-clamp-2 min-h-[2.5rem]">
+                  {project.description || "No description provided."}
+                </p>
+
+                <div className="flex flex-wrap items-center gap-2">
+                  {project.language && (
+                    <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-secondary/50 text-xs text-muted-foreground">
+                      <span
+                        className="w-2 h-2 rounded-full"
+                        style={{ backgroundColor: project.languageColor }}
+                      />
+                      {project.language}
+                    </span>
+                  )}
+                  {project.stars > 0 && (
+                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-secondary/50 text-xs text-muted-foreground">
+                      <RiStarLine className="w-3 h-3" />
+                      {project.stars}
+                    </span>
+                  )}
+                  {project.topics.slice(0, 3).map((topic) => (
+                    <span
+                      key={topic}
+                      className="px-2 py-1 rounded-md bg-secondary/50 text-xs text-muted-foreground"
+                    >
+                      {topic}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </motion.article>
+          ))
+        )}
       </div>
 
       <motion.div

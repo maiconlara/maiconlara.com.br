@@ -2,12 +2,11 @@
 
 import { motion } from "framer-motion";
 
-
 export const TechCategories = () => {
   const techCategories = [
     {
       title: "Languages",
-      items: ["TypeScript", "JavaScript", "Python", "SQL"],
+      items: ["TypeScript", "JavaScript", "Java", "SQL"],
     },
     {
       title: "Frontend",
@@ -16,7 +15,7 @@ export const TechCategories = () => {
         "Next.js",
         "Tailwind CSS",
         "Framer Motion",
-        "Redux",
+        "RNative",
         "React Query",
       ],
     },
@@ -26,7 +25,7 @@ export const TechCategories = () => {
     },
     {
       title: "Databases",
-      items: ["PostgreSQL", "MongoDB", "Redis", "Supabase", "Prisma"],
+      items: ["PostgreSQL", "MongoDB", "Redis", "Prisma"],
     },
     {
       title: "DevOps & Tools",
@@ -34,7 +33,7 @@ export const TechCategories = () => {
     },
     {
       title: "Design",
-      items: ["Figma", "Adobe XD", "Responsive Design", "UI/UX Principles"],
+      items: ["Figma", "Responsive Design", "UI/UX Principles"],
     },
   ];
 

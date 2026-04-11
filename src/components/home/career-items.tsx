@@ -8,12 +8,23 @@ import {
   RiBriefcaseLine,
   RiGraduationCapLine,
 } from "@remixicon/react";
+import { OUT_OF_GITHUB_REPOS } from "@/lib/featured-repos";
+
+const PROJECT_TILE_GRADIENTS = [
+  "from-primary/25 via-primary/10 to-transparent",
+  "from-fuchsia-500/20 via-primary/10 to-transparent",
+];
 
 const careerItems = [
   {
     icon: RiBriefcaseLine,
+    title: "stays.net",
+    date: "Feb 2026 - Present",
+  },
+  {
+    icon: RiBriefcaseLine,
     title: "Analítica - Gerenciadora de Dados S/A",
-    date: "Jul 2025 - Present",
+    date: "Jul 2025 - Jan 2026",
   },
   { icon: RiBriefcaseLine, title: "Belogic", date: "Jun 2024 - Jul 2025" },
   { icon: RiBriefcaseLine, title: "Adam Robo", date: "Jun 2023 - Jun 2024" },
@@ -55,17 +66,41 @@ export const CareerItems = () => {
       <AnimatedCard
         to="/projects"
         title="Projects"
-        description="Some of my recent works"
+        description="Some of my great works"
         delay={0.3}
         containterClassName="row-span-2"
       >
         <div className="flex gap-2 mt-4">
-          <div className="flex-1 h-24 rounded-lg bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
-            <span className="text-xs text-muted-foreground">Project 1</span>
-          </div>
-          <div className="flex-1 h-24 rounded-lg bg-gradient-to-br from-secondary to-card flex items-center justify-center">
-            <span className="text-xs text-muted-foreground">Project 2</span>
-          </div>
+          {OUT_OF_GITHUB_REPOS.slice(0, 2).map((project, index) => (
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 + index * 0.1 }}
+              className={`flex-1 h-24 rounded-lg bg-gradient-to-br ${
+                PROJECT_TILE_GRADIENTS[index % PROJECT_TILE_GRADIENTS.length]
+              } border border-border/60 p-3 flex flex-col justify-between overflow-hidden`}
+            >
+              <div className="flex items-center gap-1.5">
+                <span
+                  className="w-1.5 h-1.5 rounded-full shrink-0"
+                  style={{ backgroundColor: project.languageColor }}
+                  aria-hidden
+                />
+                <span className="text-[10px] uppercase tracking-wide text-muted-foreground">
+                  {project.language}
+                </span>
+              </div>
+              <div className="space-y-0.5">
+                <p className="text-xs font-medium text-foreground line-clamp-2 leading-tight">
+                  {project.name}
+                </p>
+                <p className="text-[10px] text-muted-foreground line-clamp-1">
+                  {project.topics.slice(0, 3).join(" · ")}
+                </p>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </AnimatedCard>
 

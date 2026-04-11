@@ -7,6 +7,7 @@ import {
   RiBriefcaseLine,
   RiGraduationCapLine,
 } from "@remixicon/react";
+import stays from "@/assets/stays_net_logo.jpeg";
 import analitica from "@/assets/analitica.png";
 import belogic from "@/assets/belogic.png";
 import ufpr from "@/assets/ufpr.png";
@@ -15,12 +16,21 @@ export const Timeline = () => {
   const timeline = [
     {
       icon: RiBriefcaseLine,
+      title: "stays.net",
+      role: "Full Stack Engineer",
+      period: "Fev 2026 - Present",
+      description: "Creating innovative web and mobile solutions.",
+      current: true,
+      logo: stays,
+    },
+    {
+      icon: RiBriefcaseLine,
       title: "Analítica S/A",
       role: "Mid-Level Full Stack Developer",
-      period: "Jul 2025 - Present",
+      period: "Jul 2025 - Jan 2026",
       description:
         "Contributing to enterprise full-stack development using Next.js and Nest.js.",
-      current: true,
+      current: false,
       logo: analitica,
     },
     {
