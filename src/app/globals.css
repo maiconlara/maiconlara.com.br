@@ -6,6 +6,48 @@
 
 @layer base {
   :root {
+    --background: 240 10% 97%;
+    --foreground: 240 10% 8%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 8%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 8%;
+
+    --primary: 270 85% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 6% 92%;
+    --secondary-foreground: 240 10% 12%;
+
+    --muted: 240 5% 88%;
+    --muted-foreground: 240 5% 32%;
+
+    --accent: 270 85% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 55%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 6% 84%;
+    --input: 240 6% 84%;
+    --ring: 270 85% 50%;
+
+    --radius: 0.75rem;
+
+    --purple-glow: 270 85% 50%;
+    --purple-muted: 270 60% 65%;
+    --surface-elevated: 0 0% 100%;
+    --text-tertiary: 240 4% 45%;
+
+    --card-shadow: 0 1px 2px 0 hsl(240 10% 40% / 0.06),
+      0 1px 3px 0 hsl(240 10% 40% / 0.08);
+    --card-shadow-hover: 0 4px 6px -1px hsl(240 10% 40% / 0.08),
+      0 2px 4px -1px hsl(240 10% 40% / 0.05);
+  }
+
+  .dark {
     --background: 0 0% 0%;
     --foreground: 0 0% 98%;
 
@@ -34,13 +76,13 @@
     --input: 0 0% 15%;
     --ring: 270 91% 65%;
 
-    --radius: 0.75rem;
-
-    /* Custom tokens */
     --purple-glow: 270 91% 65%;
     --purple-muted: 270 50% 40%;
     --surface-elevated: 0 0% 6%;
     --text-tertiary: 0 0% 45%;
+
+    --card-shadow: none;
+    --card-shadow-hover: none;
   }
 }
 
@@ -60,6 +102,42 @@
 
   ::selection {
     @apply bg-primary/30 text-foreground;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :root {
+      --theme-transition: background-color 300ms ease, border-color 300ms ease,
+        color 300ms ease, fill 300ms ease, stroke 300ms ease,
+        box-shadow 300ms ease;
+    }
+
+    html,
+    body,
+    header,
+    main,
+    section,
+    article,
+    aside,
+    nav,
+    div,
+    span,
+    p,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    a,
+    button,
+    input,
+    textarea,
+    select,
+    label,
+    code,
+    pre {
+      transition: var(--theme-transition);
+    }
   }
 }
 
@@ -84,6 +162,11 @@
 
   .card-hover {
     @apply transition-all duration-300 hover:border-primary/30 hover:glow-sm;
+    box-shadow: var(--card-shadow);
+  }
+
+  .card-hover:hover {
+    box-shadow: var(--card-shadow-hover), 0 0 20px -5px hsl(var(--primary) / 0.4);
   }
 
   .link-underline {

@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import logo from "@/assets/logo.png";
 import { useDictionary, useLocale } from "@/i18n/dictionary-context";
 import { LanguageSwitcher } from "./language-switcher";
+import { ThemeToggle } from "./theme-toggle";
 
 export function Header() {
   const pathname = usePathname();
@@ -78,7 +79,10 @@ export function Header() {
             );
           })}
 
-          <LanguageSwitcher />
+          <div className="flex items-center gap-1">
+            <ThemeToggle />
+            <LanguageSwitcher />
+          </div>
         </nav>
       </div>
     </motion.header>

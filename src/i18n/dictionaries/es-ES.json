@@ -23,6 +23,13 @@
     "language": {
       "label": "Idioma",
       "switchTo": "Cambiar a {language}"
+    },
+    "theme": {
+      "label": "Tema",
+      "toggle": "Alternar tema",
+      "light": "Claro",
+      "dark": "Oscuro",
+      "system": "Sistema"
     }
   },
   "hero": {
