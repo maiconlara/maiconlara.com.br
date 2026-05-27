@@ -11,11 +11,6 @@ import { AnimatedCard } from "@/components/ui/AnimatedCard";
 import { OUT_OF_GITHUB_REPOS } from "@/lib/featured-repos";
 import { useDictionary, useLocale } from "@/i18n/dictionary-context";
 
-const PROJECT_TILE_GRADIENTS = [
-  "from-primary/25 via-primary/10 to-transparent",
-  "from-fuchsia-500/20 via-primary/10 to-transparent",
-];
-
 export const CareerItems = () => {
   const dict = useDictionary();
   const locale = useLocale();
@@ -91,9 +86,7 @@ export const CareerItems = () => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 + index * 0.1 }}
-              className={`flex-1 h-24 rounded-lg bg-gradient-to-br ${
-                PROJECT_TILE_GRADIENTS[index % PROJECT_TILE_GRADIENTS.length]
-              } border border-border/60 p-3 flex flex-col justify-between overflow-hidden`}
+              className="flex-1 h-24 rounded-lg bg-card border border-border p-3 flex flex-col justify-between overflow-hidden"
             >
               <div className="flex items-center gap-1.5">
                 <span

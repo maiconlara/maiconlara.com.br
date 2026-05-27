@@ -62,7 +62,7 @@ export const TechCategories = () => {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: categoryIndex * 0.1 + itemIndex * 0.05 }}
-                  className="px-3 py-1.5 rounded-md bg-secondary text-sm text-foreground hover:bg-primary hover:text-primary-foreground transition-colors cursor-default"
+                  className="px-3 py-1.5 rounded-md bg-secondary text-sm text-foreground cursor-default"
                 >
                   {item}
                 </motion.span>
@@ -76,7 +76,7 @@ export const TechCategories = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8 }}
-        className="mt-16 p-8 rounded-xl bg-gradient-to-br from-primary/10 via-card to-card border border-primary/20 text-center"
+        className="mt-16 p-8 rounded-xl bg-card border border-primary text-center"
       >
         <h3 className="text-xl font-semibold mb-2">
           {dict.stack.alwaysLearning}

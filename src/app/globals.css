@@ -146,27 +146,13 @@
     @apply bg-gradient-to-r from-primary via-purple-400 to-primary bg-clip-text text-transparent;
   }
 
-  .glow {
-    box-shadow: 0 0 40px -10px hsl(var(--primary) / 0.5);
-  }
-
-  .glow-sm {
-    box-shadow: 0 0 20px -5px hsl(var(--primary) / 0.4);
-  }
-
-  .border-gradient {
-    border: 1px solid transparent;
-    background: linear-gradient(hsl(var(--card)), hsl(var(--card))) padding-box,
-                linear-gradient(135deg, hsl(var(--primary) / 0.5), transparent 50%) border-box;
-  }
-
   .card-hover {
-    @apply transition-all duration-300 hover:border-primary/30 hover:glow-sm;
+    @apply transition-all duration-300 hover:border-primary/40;
     box-shadow: var(--card-shadow);
   }
 
   .card-hover:hover {
-    box-shadow: var(--card-shadow-hover), 0 0 20px -5px hsl(var(--primary) / 0.4);
+    box-shadow: var(--card-shadow-hover);
   }
 
   .link-underline {

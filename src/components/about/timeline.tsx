@@ -85,7 +85,7 @@ export const Timeline = () => {
               <div
                 className={`relative z-10 flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
                   item.current
-                    ? "bg-primary text-primary-foreground glow-sm"
+                    ? "bg-primary text-primary-foreground"
                     : "bg-secondary text-muted-foreground"
                 }`}
               >

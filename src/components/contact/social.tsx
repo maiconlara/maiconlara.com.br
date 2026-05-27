@@ -81,7 +81,7 @@ export const Social = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8 }}
-        className="p-6 rounded-xl bg-gradient-to-br from-primary/10 via-card to-card border border-primary/20"
+        className="p-6 rounded-xl bg-card border border-primary"
       >
         <p className="text-sm text-muted-foreground">
           <span className="text-primary font-medium">{c.tip}</span> {c.tipText}

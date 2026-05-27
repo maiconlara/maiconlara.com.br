@@ -10,15 +10,6 @@ import {
 } from "@/lib/featured-repos";
 import { useDictionary, interpolate } from "@/i18n/dictionary-context";
 
-const GRADIENTS = [
-  "from-purple-500/20 to-pink-500/20",
-  "from-blue-500/20 to-cyan-500/20",
-  "from-orange-500/20 to-red-500/20",
-  "from-green-500/20 to-emerald-500/20",
-  "from-indigo-500/20 to-violet-500/20",
-  "from-amber-500/20 to-yellow-500/20",
-];
-
 const fetchRepos = async (): Promise<FeaturedRepo[]> => {
   const res = await fetch("/api/github/repos?limit=4");
   if (!res.ok) throw new Error("Failed to fetch GitHub repos");
@@ -78,12 +69,6 @@ export const Projects = () => {
               transition={{ delay: index * 0.1 }}
               className="group relative overflow-hidden rounded-xl bg-card border border-border card-hover"
             >
-              <div
-                className={`absolute inset-0 bg-gradient-to-br ${
-                  GRADIENTS[index % GRADIENTS.length]
-                } opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
-              />
-
               <div className="relative p-6">
                 <div className="flex items-start justify-between mb-4 gap-4">
                   <h3 className="text-xl font-semibold group-hover:text-primary transition-colors">
