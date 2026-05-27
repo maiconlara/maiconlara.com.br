@@ -10,6 +10,7 @@ import {
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
+
 import { cn } from "@/lib/utils";
 import {
   Tooltip,
@@ -17,6 +18,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  useDictionary,
+  useLocale,
+  interpolate,
+} from "@/i18n/dictionary-context";
 
 interface ContributionCell {
   date: string;
@@ -45,7 +51,23 @@ const formatCount = (n: number) => {
   return `${n}+`;
 };
 
+type WeekdayKey = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
+
+const WEEKDAY_KEY_MAP: Record<string, WeekdayKey> = {
+  Mon: "mon",
+  Tue: "tue",
+  Wed: "wed",
+  Thu: "thu",
+  Fri: "fri",
+  Sat: "sat",
+  Sun: "sun",
+};
+
 export function Dashboard() {
+  const dict = useDictionary();
+  const locale = useLocale();
+  const d = dict.dashboard;
+
   const { data, isLoading } = useQuery({
     queryKey: ["github-stats"],
     queryFn: fetchStats,
@@ -56,22 +78,22 @@ export function Dashboard() {
 
   const stats = [
     {
-      label: "Years on GitHub",
+      label: d.stats.yearsOnGitHub,
       value: data ? `${data.yearsActive}+` : null,
       icon: RiCalendarLine,
     },
     {
-      label: "Public Repos",
+      label: d.stats.publicRepos,
       value: data ? formatCount(data.publicRepos) : null,
       icon: RiCodeLine,
     },
     {
-      label: "GitHub Stars",
+      label: d.stats.githubStars,
       value: data ? formatCount(data.totalStars) : null,
       icon: RiStarLine,
     },
     {
-      label: "Followers",
+      label: d.stats.followers,
       value: data ? formatCount(data.followers) : null,
       icon: RiUserStarLine,
     },
@@ -83,10 +105,9 @@ export function Dashboard() {
     [contribution]
   );
 
-  // Group contributions into weeks of 7 slots aligned by UTC weekday
-  // (Sun=0 .. Sat=6). Missing days (partial first/last week) become nulls
-  // so the CSS grid stays aligned.
-  const contributionWeeks = useMemo<Array<Array<ContributionCell | null>>>(() => {
+  const contributionWeeks = useMemo<
+    Array<Array<ContributionCell | null>>
+  >(() => {
     if (contribution.length === 0) return [];
     const sorted = [...contribution].sort((a, b) =>
       a.date.localeCompare(b.date)
@@ -109,15 +130,13 @@ export function Dashboard() {
     return weeks;
   }, [contribution]);
 
-  // Pick which weeks should display a month label (only first occurrence
-  // of each month gets a label, like the GitHub profile graph).
   const monthLabels = useMemo(() => {
     const labels: Record<number, string> = {};
     let last = "";
     contributionWeeks.forEach((week, i) => {
-      const first = week.find((d) => d !== null);
+      const first = week.find((day): day is ContributionCell => day !== null);
       if (!first) return;
-      const month = new Date(first.date).toLocaleString("en-US", {
+      const month = new Date(first.date).toLocaleString(locale, {
         month: "short",
       });
       if (month !== last) {
@@ -126,10 +145,10 @@ export function Dashboard() {
       }
     });
     return labels;
-  }, [contributionWeeks]);
+  }, [contributionWeeks, locale]);
 
   const formatDate = (iso: string) =>
-    new Date(iso).toLocaleDateString("en-US", {
+    new Date(iso).toLocaleDateString(locale, {
       weekday: "short",
       day: "numeric",
       month: "short",
@@ -154,10 +173,31 @@ export function Dashboard() {
     { day: "Sat", commits: 0 },
     { day: "Sun", commits: 0 },
   ];
-  const maxCommits = Math.max(...weeklyActivity.map((d) => d.commits), 1);
+  const maxCommits = Math.max(...weeklyActivity.map((day) => day.commits), 1);
 
   const languages =
-    data?.topLanguages && data.topLanguages.length > 0 ? data.topLanguages : [];
+    data?.topLanguages && data.topLanguages.length > 0
+      ? data.topLanguages
+      : [];
+
+  const translateDay = (day: string) => {
+    const key = WEEKDAY_KEY_MAP[day];
+    return key ? d.weekdays[key] : day;
+  };
+
+  const commitsLabel = (count: number, dateLabel: string) =>
+    interpolate(d.commitsOn, {
+      count,
+      plural: count === 1 ? "" : "s",
+      date: dateLabel,
+    });
+
+  const contributionsLabel = (count: number, dateLabel: string) =>
+    interpolate(d.contributionsOn, {
+      count,
+      plural: count === 1 ? "" : "s",
+      date: dateLabel,
+    });
 
   return (
     <div className="container px-0 pb-6">
@@ -187,7 +227,6 @@ export function Dashboard() {
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
-        {/* Weekly Activity */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -196,19 +235,18 @@ export function Dashboard() {
         >
           <div className="flex items-center gap-2 mb-6">
             <RiCalendarLine className="w-5 h-5 text-primary" />
-            <h3 className="font-semibold">Weekly Activity</h3>
+            <h3 className="font-semibold">{d.weeklyActivity}</h3>
           </div>
 
           <TooltipProvider delayDuration={80} skipDelayDuration={200}>
             <div className="flex items-end justify-between h-32 gap-2">
               {weeklyActivity.map((day, index) => {
-                // Ensure non-zero days always render a visible nub, while
-                // keeping proportions correct for larger values.
                 const ratio = day.commits / maxCommits;
                 const targetHeight =
                   day.commits === 0 ? 0 : Math.max(ratio * 100, 8);
 
-                const label = day.date ? formatDate(day.date) : day.day;
+                const dayLabel = translateDay(day.day);
+                const label = day.date ? formatDate(day.date) : dayLabel;
 
                 return (
                   <Tooltip key={day.day + index}>
@@ -226,15 +264,12 @@ export function Dashboard() {
                           }`}
                         />
                         <span className="text-xs text-muted-foreground leading-none">
-                          {day.day}
+                          {dayLabel}
                         </span>
                       </div>
                     </TooltipTrigger>
                     <TooltipContent side="top" className="text-xs">
-                      <span className="font-medium">
-                        {day.commits} commit{day.commits === 1 ? "" : "s"}
-                      </span>
-                      <span className="text-muted-foreground"> on {label}</span>
+                      {commitsLabel(day.commits, label)}
                     </TooltipContent>
                   </Tooltip>
                 );
@@ -243,7 +278,6 @@ export function Dashboard() {
           </TooltipProvider>
         </motion.div>
 
-        {/* Languages */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -252,7 +286,7 @@ export function Dashboard() {
         >
           <div className="flex items-center gap-2 mb-6">
             <RiLineChartLine className="w-5 h-5 text-primary" />
-            <h3 className="font-semibold">Top Languages</h3>
+            <h3 className="font-semibold">{d.topLanguages}</h3>
           </div>
 
           <div className="space-y-4">
@@ -292,7 +326,6 @@ export function Dashboard() {
         </motion.div>
       </div>
 
-      {/* GitHub Contribution Graph */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -300,11 +333,12 @@ export function Dashboard() {
         className="mt-6 p-6 rounded-xl bg-card border border-border"
       >
         <div className="flex items-baseline justify-between gap-4 mb-4 flex-wrap">
-          <h3 className="font-semibold">Contribution Graph</h3>
+          <h3 className="font-semibold">{d.contributionGraph}</h3>
           {data?.contributionTotal ? (
             <span className="text-xs text-muted-foreground">
-              {data.contributionTotal.toLocaleString("en-US")} contributions in
-              the last year
+              {interpolate(d.contributionsLastYear, {
+                count: data.contributionTotal.toLocaleString(locale),
+              })}
             </span>
           ) : null}
         </div>
@@ -313,18 +347,13 @@ export function Dashboard() {
           <div className="w-full aspect-[53/7] rounded-md bg-secondary/40 animate-pulse" />
         ) : contribution.length === 0 ? (
           <p className="text-sm text-muted-foreground py-10 text-center">
-            Contribution data unavailable. A GitHub token with{" "}
-            <code className="px-1 py-0.5 rounded bg-secondary text-xs">
-              read:user
-            </code>{" "}
-            scope is required.
+            {interpolate(d.contributionUnavailable, {
+              scope: "read:user",
+            })}
           </p>
         ) : (
           <TooltipProvider delayDuration={60} skipDelayDuration={200}>
             <div className="w-full">
-              {/* Month labels — share the same column template as the heatmap
-                  so each label sits above its week column. pl compensates for
-                  the day-of-week labels to the left of the grid. */}
               <div className="flex mb-1 ">
                 <div
                   className="grid gap-[3px] text-[10px] text-muted-foreground w-full"
@@ -344,11 +373,6 @@ export function Dashboard() {
               </div>
 
               <div className="flex gap-1 items-stretch w-full">
-                {/* Day-of-week labels — stretch to the graph's height via flex */}
-       
-
-                {/* Heatmap — fills remaining width, height derived from
-                    aspect-ratio so cells stay square responsively */}
                 <div
                   className="grid flex-1 min-w-0 gap-[3px]"
                   style={{
@@ -361,9 +385,7 @@ export function Dashboard() {
                   {contributionWeeks.flatMap((week, wi) =>
                     week.map((day, di) => {
                       if (!day) {
-                        return (
-                          <div key={`empty-${wi}-${di}`} aria-hidden />
-                        );
+                        return <div key={`empty-${wi}-${di}`} aria-hidden />;
                       }
                       return (
                         <Tooltip key={`${wi}-${di}-${day.date}`}>
@@ -385,14 +407,7 @@ export function Dashboard() {
                             side="top"
                             className="text-xs px-2 py-1"
                           >
-                            <span className="font-medium">
-                              {day.count} contribution
-                              {day.count === 1 ? "" : "s"}
-                            </span>
-                            <span className="text-muted-foreground">
-                              {" "}
-                              on {formatDate(day.date)}
-                            </span>
+                            {contributionsLabel(day.count, formatDate(day.date))}
                           </TooltipContent>
                         </Tooltip>
                       );
@@ -401,15 +416,14 @@ export function Dashboard() {
                 </div>
               </div>
 
-              {/* Legend */}
               <div className="flex items-center justify-end gap-1.5 mt-3 text-[10px] text-muted-foreground">
-                <span>Less</span>
+                <span>{d.less}</span>
                 <div className="w-3 h-3 rounded-[2px] bg-secondary" />
                 <div className="w-3 h-3 rounded-[2px] bg-primary/20" />
                 <div className="w-3 h-3 rounded-[2px] bg-primary/40" />
                 <div className="w-3 h-3 rounded-[2px] bg-primary/70" />
                 <div className="w-3 h-3 rounded-[2px] bg-primary" />
-                <span>More</span>
+                <span>{d.more}</span>
               </div>
             </div>
           </TooltipProvider>

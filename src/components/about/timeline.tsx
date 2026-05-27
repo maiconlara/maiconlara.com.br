@@ -2,61 +2,65 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import {
   RiArrowRightLine,
   RiBriefcaseLine,
   RiGraduationCapLine,
 } from "@remixicon/react";
+
 import stays from "@/assets/stays_net_logo.jpeg";
 import analitica from "@/assets/analitica.png";
 import belogic from "@/assets/belogic.png";
 import ufpr from "@/assets/ufpr.png";
-import Image from "next/image";
+import { useDictionary, useLocale } from "@/i18n/dictionary-context";
+
 export const Timeline = () => {
+  const dict = useDictionary();
+  const locale = useLocale();
+  const t = dict.about.timeline;
+
   const timeline = [
     {
       icon: RiBriefcaseLine,
       title: "stays.net",
-      role: "Full Stack Engineer",
-      period: "Feb 2026 - Present",
-      description: "Creating innovative web and mobile solutions.",
+      role: t.stays.role,
+      period: t.stays.period,
+      description: t.stays.description,
       current: true,
       logo: stays,
     },
     {
       icon: RiBriefcaseLine,
       title: "Analítica S/A",
-      role: "Mid-Level Full Stack Developer",
-      period: "Jul 2025 - Jan 2026",
-      description:
-        "Contributing to enterprise full-stack development using Next.js and Nest.js.",
+      role: t.analitica.role,
+      period: t.analitica.period,
+      description: t.analitica.description,
       current: false,
       logo: analitica,
     },
     {
       icon: RiBriefcaseLine,
       title: "Belogic",
-      role: "Mid-Level Frontend Developer",
-      period: "Mar 2025 - Jul 2025",
-      description:
-        "Contributing to enterprise full-stack development using Next.js and Nest.js.",
+      role: t.belogicMid.role,
+      period: t.belogicMid.period,
+      description: t.belogicMid.description,
       logo: belogic,
     },
     {
       icon: RiGraduationCapLine,
-      title: "Bachelor's Degree",
-      role: "Systems Analysis and Development",
-      period: "Feb 2022 - Nov 2024",
-      description: "Federal University of Paraná (UFPR)",
+      title: t.ufpr.title,
+      role: t.ufpr.role,
+      period: t.ufpr.period,
+      description: t.ufpr.description,
       logo: ufpr,
     },
     {
       icon: RiBriefcaseLine,
       title: "Belogic",
-      role: "Junior Frontend Developer",
-      period: "Jun 2024 - Mar 2025",
-      description:
-        "Contributing to enterprise full-stack development using Next.js and Nest.js.",
+      role: t.belogicJunior.role,
+      period: t.belogicJunior.period,
+      description: t.belogicJunior.description,
       logo: belogic,
     },
   ];
@@ -64,7 +68,6 @@ export const Timeline = () => {
   return (
     <>
       <div className="relative">
-        {/* Timeline line */}
         <div className="absolute left-[19px] top-0 bottom-0 w-px bg-border md:left-1/2 md:-translate-x-px" />
 
         {timeline.map((item, index) => {
@@ -79,7 +82,6 @@ export const Timeline = () => {
                 isLeft ? "md:flex-row" : "md:flex-row-reverse"
               }`}
             >
-              {/* Icon */}
               <div
                 className={`relative z-10 flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
                   item.current
@@ -90,7 +92,6 @@ export const Timeline = () => {
                 <item.icon className="size-5" />
               </div>
 
-              {/* Content */}
               <div
                 className={`flex-1 max-w-md ${
                   isLeft ? "md:text-right md:pr-16" : "md:text-left md:pl-16"
@@ -140,10 +141,10 @@ export const Timeline = () => {
         className="mt-16 text-center"
       >
         <Link
-          href="/about/stack"
+          href={`/${locale}/about/stack`}
           className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
         >
-          View my tech stack
+          {dict.about.viewStack}
           <RiArrowRightLine className="w-4 h-4" />
         </Link>
       </motion.div>

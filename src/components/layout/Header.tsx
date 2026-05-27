@@ -3,19 +3,26 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
-import logo from "@/assets/logo.png";
 import Image from "next/image";
 
-const navItems = [
-  { path: "/", label: "Home" },
-  { path: "/about", label: "About" },
-  { path: "/projects", label: "Projects" },
-  { path: "/contact", label: "Contact" },
-];
+import { cn } from "@/lib/utils";
+import logo from "@/assets/logo.png";
+import { useDictionary, useLocale } from "@/i18n/dictionary-context";
+import { LanguageSwitcher } from "./language-switcher";
 
 export function Header() {
   const pathname = usePathname();
+  const dict = useDictionary();
+  const locale = useLocale();
+
+  const navItems = [
+    { path: "", label: dict.header.nav.home },
+    { path: "/about", label: dict.header.nav.about },
+    { path: "/projects", label: dict.header.nav.projects },
+    { path: "/contact", label: dict.header.nav.contact },
+  ];
+
+  const localePrefix = `/${locale}`;
 
   return (
     <motion.header
@@ -26,7 +33,7 @@ export function Header() {
     >
       <div className="container flex items-center justify-between h-16">
         <Link
-          href="/"
+          href={localePrefix}
           className="font-semibold text-lg hover:text-primary transition-colors"
         >
           <Image
@@ -38,21 +45,22 @@ export function Header() {
           />
         </Link>
 
-        <nav className="flex items-center gap-6">
+        <nav className="flex items-center gap-4 sm:gap-6">
           {navItems.map((item) => {
+            const href = `${localePrefix}${item.path}`;
             const isActive =
-              pathname === item.path ||
-              (item.path !== "/" && pathname?.startsWith(item.path));
+              pathname === href ||
+              (item.path !== "" && pathname?.startsWith(href));
 
             return (
               <Link
                 key={item.path}
-                href={item.path}
+                href={href}
                 className={cn(
                   "relative py-1 text-sm transition-colors",
                   isActive
                     ? "text-foreground"
-                    : "text-muted-foreground hover:text-foreground",
+                    : "text-muted-foreground hover:text-foreground"
                 )}
               >
                 {item.label}
@@ -63,15 +71,14 @@ export function Header() {
                     scaleX: isActive ? 1 : 0,
                     opacity: isActive ? 1 : 0,
                   }}
-                  transition={{
-                    duration: 0.3,
-                    ease: "easeOut",
-                  }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
                   className="absolute left-0 right-0 -bottom-1 h-[2px] origin-center bg-violet-500 rounded-full"
                 />
               </Link>
             );
           })}
+
+          <LanguageSwitcher />
         </nav>
       </div>
     </motion.header>

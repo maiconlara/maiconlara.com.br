@@ -1,47 +1,61 @@
 "use client";
 
 import { motion } from "framer-motion";
-
-import { AnimatedCard } from "@/components/ui/AnimatedCard";
 import {
   RiArrowRightLine,
   RiBriefcaseLine,
   RiGraduationCapLine,
 } from "@remixicon/react";
+
+import { AnimatedCard } from "@/components/ui/AnimatedCard";
 import { OUT_OF_GITHUB_REPOS } from "@/lib/featured-repos";
+import { useDictionary, useLocale } from "@/i18n/dictionary-context";
 
 const PROJECT_TILE_GRADIENTS = [
   "from-primary/25 via-primary/10 to-transparent",
   "from-fuchsia-500/20 via-primary/10 to-transparent",
 ];
 
-const careerItems = [
-  {
-    icon: RiBriefcaseLine,
-    title: "stays.net",
-    date: "Feb 2026 - Present",
-  },
-  {
-    icon: RiBriefcaseLine,
-    title: "Analítica - Gerenciadora de Dados S/A",
-    date: "Jul 2025 - Jan 2026",
-  },
-  { icon: RiBriefcaseLine, title: "Belogic", date: "Jun 2024 - Jul 2025" },
-  { icon: RiBriefcaseLine, title: "Adam Robo", date: "Jun 2023 - Jun 2024" },
-  {
-    icon: RiGraduationCapLine,
-    title: "Systems Analysis and Development",
-    date: "Feb 2022 - Nov 2024",
-  },
-];
-
 export const CareerItems = () => {
+  const dict = useDictionary();
+  const locale = useLocale();
+  const t = dict.about.timeline;
+  const cards = dict.home.cards;
+
+  const careerItems = [
+    {
+      icon: RiBriefcaseLine,
+      title: "stays.net",
+      date: t.stays.period,
+    },
+    {
+      icon: RiBriefcaseLine,
+      title: "Analítica - Gerenciadora de Dados S/A",
+      date: t.analitica.period,
+    },
+    {
+      icon: RiBriefcaseLine,
+      title: "Belogic",
+      date: `${t.belogicJunior.period.split(" - ")[0]} - ${t.belogicMid.period.split(" - ")[1]}`,
+    },
+    {
+      icon: RiBriefcaseLine,
+      title: t.adamRobo.title,
+      date: t.adamRobo.period,
+    },
+    {
+      icon: RiGraduationCapLine,
+      title: t.ufpr.role,
+      date: t.ufpr.period,
+    },
+  ];
+
   return (
     <section className="grid md:grid-cols-2 gap-6 items-stretch">
       <AnimatedCard
-        to="/about"
-        title="About"
-        description="Take a look into my career."
+        to={`/${locale}/about`}
+        title={cards.about.title}
+        description={cards.about.description}
         delay={0.2}
       >
         <div className="space-y-3 mt-4">
@@ -64,9 +78,9 @@ export const CareerItems = () => {
       </AnimatedCard>
 
       <AnimatedCard
-        to="/projects"
-        title="Projects"
-        description="Some of my great works"
+        to={`/${locale}/projects`}
+        title={cards.projects.title}
+        description={cards.projects.description}
         delay={0.3}
         containterClassName="row-span-2"
       >
@@ -106,9 +120,9 @@ export const CareerItems = () => {
 
       <div className="grid grid-cols-3 gap-6">
         <AnimatedCard
-          to="/about/stack"
-          title="Languages & Tools"
-          description="Technologies I work with"
+          to={`/${locale}/about/stack`}
+          title={cards.stack.title}
+          description={cards.stack.description}
           delay={0.4}
           containterClassName="col-span-2"
         >
@@ -125,14 +139,14 @@ export const CareerItems = () => {
         </AnimatedCard>
 
         <AnimatedCard
-          to="/contact"
-          title="Contact"
-          description="Lets talk!"
+          to={`/${locale}/contact`}
+          title={cards.contact.title}
+          description={cards.contact.description}
           delay={0.6}
           containterClassName="col-span-1"
         >
           <div className="flex items-center gap-2 mt-4 text-primary">
-            <span className="text-sm">Get in touch</span>
+            <span className="text-sm">{cards.contact.cta}</span>
             <RiArrowRightLine className="w-4 h-4" />
           </div>
         </AnimatedCard>

@@ -1,15 +1,19 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useDictionary } from "@/i18n/dictionary-context";
 
 export const TechCategories = () => {
+  const dict = useDictionary();
+  const cats = dict.stack.categories;
+
   const techCategories = [
     {
-      title: "Languages",
+      title: cats.languages,
       items: ["TypeScript", "JavaScript", "Java", "SQL"],
     },
     {
-      title: "Frontend",
+      title: cats.frontend,
       items: [
         "React",
         "Next.js",
@@ -20,19 +24,19 @@ export const TechCategories = () => {
       ],
     },
     {
-      title: "Backend",
+      title: cats.backend,
       items: ["Node.js", "Express", "NestJS", "GraphQL", "REST APIs"],
     },
     {
-      title: "Databases",
+      title: cats.databases,
       items: ["PostgreSQL", "MongoDB", "Redis", "Prisma"],
     },
     {
-      title: "DevOps & Tools",
+      title: cats.devops,
       items: ["Git", "Docker", "Vercel", "AWS", "GitHub Actions", "Jest"],
     },
     {
-      title: "Design",
+      title: cats.design,
       items: ["Figma", "Responsive Design", "UI/UX Principles"],
     },
   ];
@@ -74,12 +78,10 @@ export const TechCategories = () => {
         transition={{ delay: 0.8 }}
         className="mt-16 p-8 rounded-xl bg-gradient-to-br from-primary/10 via-card to-card border border-primary/20 text-center"
       >
-        <h3 className="text-xl font-semibold mb-2">Always Learning</h3>
-        <p className="text-muted-foreground">
-          The tech landscape is always evolving, and so am I. I'm constantly
-          exploring new technologies and best practices to deliver better
-          solutions.
-        </p>
+        <h3 className="text-xl font-semibold mb-2">
+          {dict.stack.alwaysLearning}
+        </h3>
+        <p className="text-muted-foreground">{dict.stack.alwaysLearningText}</p>
       </motion.div>
     </>
   );

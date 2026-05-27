@@ -3,10 +3,12 @@
 import { motion } from "framer-motion";
 import { RiExternalLinkLine, RiGithubLine, RiStarLine } from "@remixicon/react";
 import { useQuery } from "@tanstack/react-query";
+
 import {
   OUT_OF_GITHUB_REPOS,
   type FeaturedRepo,
 } from "@/lib/featured-repos";
+import { useDictionary, interpolate } from "@/i18n/dictionary-context";
 
 const GRADIENTS = [
   "from-purple-500/20 to-pink-500/20",
@@ -24,6 +26,9 @@ const fetchRepos = async (): Promise<FeaturedRepo[]> => {
 };
 
 export const Projects = () => {
+  const dict = useDictionary();
+  const p = dict.projects;
+
   const { data, isLoading, isError } = useQuery({
     queryKey: ["github-repos"],
     queryFn: fetchRepos,
@@ -62,7 +67,7 @@ export const Projects = () => {
           ))
         ) : isError || !data || data.length === 0 ? (
           <p className="md:col-span-2 text-center text-muted-foreground py-12">
-            Could not load projects from GitHub right now.
+            {p.loadError}
           </p>
         ) : (
           projects.map((project, index) => (
@@ -91,7 +96,9 @@ export const Projects = () => {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="p-2 rounded-lg bg-secondary hover:bg-primary hover:text-primary-foreground transition-colors"
-                        aria-label={`View ${project.name} on GitHub`}
+                        aria-label={interpolate(p.viewOnGitHub, {
+                          name: project.name,
+                        })}
                       >
                         <RiGithubLine className="w-4 h-4" />
                       </a>
@@ -102,7 +109,9 @@ export const Projects = () => {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="p-2 rounded-lg bg-secondary hover:bg-primary hover:text-primary-foreground transition-colors"
-                        aria-label={`View ${project.name} live site`}
+                        aria-label={interpolate(p.viewLive, {
+                          name: project.name,
+                        })}
                       >
                         <RiExternalLinkLine className="w-4 h-4" />
                       </a>
@@ -111,7 +120,7 @@ export const Projects = () => {
                 </div>
 
                 <p className="text-muted-foreground text-sm mb-4 line-clamp-2 min-h-[2.5rem]">
-                  {project.description || "No description provided."}
+                  {project.description || p.noDescription}
                 </p>
 
                 <div className="flex flex-wrap items-center gap-2">
@@ -151,9 +160,7 @@ export const Projects = () => {
         transition={{ delay: 0.6 }}
         className="mt-16 text-center"
       >
-        <p className="text-muted-foreground mb-4">
-          Want to see more? Check out my GitHub for additional projects.
-        </p>
+        <p className="text-muted-foreground mb-4">{p.wantMore}</p>
         <a
           href="https://github.com/maiconlara"
           target="_blank"
@@ -161,7 +168,7 @@ export const Projects = () => {
           className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-secondary hover:bg-primary hover:text-primary-foreground transition-colors"
         >
           <RiGithubLine className="w-4 h-4" />
-          View GitHub Profile
+          {p.viewGitHub}
         </a>
       </motion.div>
     </>

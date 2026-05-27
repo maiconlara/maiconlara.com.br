@@ -7,8 +7,12 @@ import {
   RiMapPinLine,
 } from "@remixicon/react";
 import { motion } from "framer-motion";
+import { useDictionary } from "@/i18n/dictionary-context";
 
 export const Social = () => {
+  const dict = useDictionary();
+  const c = dict.contact;
+
   const socialLinks = [
     {
       icon: RiGithubLine,
@@ -22,7 +26,6 @@ export const Social = () => {
       href: "https://linkedin.com/in/maiconlara",
       username: "Maicon Lara",
     },
-
     {
       icon: RiMailLine,
       label: "Email",
@@ -30,6 +33,7 @@ export const Social = () => {
       username: "maiconlaracontato@gmail.com",
     },
   ];
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -41,15 +45,12 @@ export const Social = () => {
         <div className="flex items-center gap-3 mb-4">
           <RiMapPinLine className="w-5 h-5 text-primary" />
           <div>
-            <p className="font-medium">Location</p>
-            <p className="text-sm text-muted-foreground">
-              Curitiba, Paraná, Brazil
-            </p>
+            <p className="font-medium">{c.location.title}</p>
+            <p className="text-sm text-muted-foreground">{c.location.city}</p>
           </div>
         </div>
         <p className="text-sm text-muted-foreground">
-          Available for remote work worldwide. Open to relocation for the right
-          opportunity.
+          {c.location.availability}
         </p>
       </div>
 
@@ -83,9 +84,7 @@ export const Social = () => {
         className="p-6 rounded-xl bg-gradient-to-br from-primary/10 via-card to-card border border-primary/20"
       >
         <p className="text-sm text-muted-foreground">
-          <span className="text-primary font-medium">Tip:</span> I usually
-          respond within 24 hours. For urgent matters, reach out on LinkedIn or
-          Twitter.
+          <span className="text-primary font-medium">{c.tip}</span> {c.tipText}
         </p>
       </motion.div>
     </motion.div>

@@ -1,0 +1,179 @@
+{
+  "metadata": {
+    "siteName": "Maicon Lara",
+    "defaultTitle": "Maicon Lara | Frontend & Fullstack Developer",
+    "titleTemplate": "%s | Maicon Lara",
+    "description": "Mid-Level Fullstack Developer with 3+ years of experience, specialized in creating scalable and high-performance applications. I work mainly with Next.js, TypeScript, React and Node.js, always aiming maintainable code and outstanding user experiences.",
+    "shortDescription": "Mid-Level Fullstack Developer with 3+ years of experience, specialized in creating scalable and high-performance applications.",
+    "ogAlt": "Maicon Lara's portfolio",
+    "pages": {
+      "about": "About",
+      "projects": "Projects",
+      "contact": "Contact",
+      "stack": "Stack"
+    }
+  },
+  "header": {
+    "nav": {
+      "home": "Home",
+      "about": "About",
+      "projects": "Projects",
+      "contact": "Contact"
+    },
+    "language": {
+      "label": "Language",
+      "switchTo": "Switch to {language}"
+    }
+  },
+  "hero": {
+    "greeting": "Hello!",
+    "name": "I'm Maicon",
+    "location": "Curitiba, Paraná, Brazil",
+    "availability": "Open to opportunities",
+    "bioRole": "Mid-Level Fullstack Developer",
+    "bioBefore": "",
+    "bioMiddle": "with 3+ years of experience, specialized in creating scalable and high-performance applications. I work mainly with",
+    "bioAnd": "and",
+    "bioAfter": ", always aiming maintainable code and outstanding user experiences."
+  },
+  "home": {
+    "cards": {
+      "about": {
+        "title": "About",
+        "description": "Take a look into my career."
+      },
+      "projects": {
+        "title": "Projects",
+        "description": "Some of my great works"
+      },
+      "stack": {
+        "title": "Languages & Tools",
+        "description": "Technologies I work with"
+      },
+      "contact": {
+        "title": "Contact",
+        "description": "Lets talk!",
+        "cta": "Get in touch"
+      }
+    }
+  },
+  "dashboard": {
+    "stats": {
+      "yearsOnGitHub": "Years on GitHub",
+      "publicRepos": "Public Repos",
+      "githubStars": "GitHub Stars",
+      "followers": "Followers"
+    },
+    "weeklyActivity": "Weekly Activity",
+    "topLanguages": "Top Languages",
+    "contributionGraph": "Contribution Graph",
+    "contributionsLastYear": "{count} contributions in the last year",
+    "commitsOn": "{count} commit{plural} on {date}",
+    "contributionsOn": "{count} contribution{plural} on {date}",
+    "less": "Less",
+    "more": "More",
+    "weekdays": {
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat",
+      "sun": "Sun"
+    },
+    "contributionUnavailable": "Contribution data unavailable. A GitHub token with {scope} scope is required."
+  },
+  "about": {
+    "title": "About",
+    "subtitle": "A deeper look into my professional and personal journey. Here's a timeline of the major milestones that shaped who I am today as a developer and person.",
+    "back": "Back",
+    "viewStack": "View my tech stack",
+    "current": "Current",
+    "timeline": {
+      "stays": {
+        "role": "Full Stack Engineer",
+        "period": "Feb 2026 - Present",
+        "description": "Creating innovative web and mobile solutions."
+      },
+      "analitica": {
+        "role": "Mid-Level Full Stack Developer",
+        "period": "Jul 2025 - Jan 2026",
+        "description": "Contributing to enterprise full-stack development using Next.js and Nest.js."
+      },
+      "belogicMid": {
+        "role": "Mid-Level Frontend Developer",
+        "period": "Mar 2025 - Jul 2025",
+        "description": "Contributing to enterprise full-stack development using Next.js and Nest.js."
+      },
+      "ufpr": {
+        "title": "Bachelor's Degree",
+        "role": "Systems Analysis and Development",
+        "period": "Feb 2022 - Nov 2024",
+        "description": "Federal University of Paraná (UFPR)"
+      },
+      "belogicJunior": {
+        "role": "Junior Frontend Developer",
+        "period": "Jun 2024 - Mar 2025",
+        "description": "Contributing to enterprise full-stack development using Next.js and Nest.js."
+      },
+      "adamRobo": {
+        "title": "Adam Robo",
+        "period": "Jun 2023 - Jun 2024"
+      }
+    }
+  },
+  "stack": {
+    "title": "Languages & Tools",
+    "subtitle": "The technologies I use daily to build modern, scalable, and performant web applications.",
+    "back": "Back to About",
+    "alwaysLearning": "Always Learning",
+    "alwaysLearningText": "The tech landscape is always evolving, and so am I. I'm constantly exploring new technologies and best practices to deliver better solutions.",
+    "categories": {
+      "languages": "Languages",
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "databases": "Databases",
+      "devops": "DevOps & Tools",
+      "design": "Design"
+    }
+  },
+  "projects": {
+    "title": "Projects",
+    "subtitle": "A collection of my recent work. Each project represents a unique challenge and an opportunity to push the boundaries of what's possible on the web.",
+    "back": "Back",
+    "loadError": "Could not load projects from GitHub right now.",
+    "noDescription": "No description provided.",
+    "wantMore": "Want to see more? Check out my GitHub for additional projects.",
+    "viewGitHub": "View GitHub Profile",
+    "viewOnGitHub": "View {name} on GitHub",
+    "viewLive": "View {name} live site"
+  },
+  "contact": {
+    "title": "Let's Connect!",
+    "subtitle": "Have a project in mind or just want to chat? I'd love to hear from you. Feel free to reach out through any of the channels below.",
+    "back": "Back",
+    "form": {
+      "name": "Name",
+      "namePlaceholder": "Your name",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "message": "Message",
+      "messagePlaceholder": "Your message...",
+      "send": "Send Message",
+      "toastTitle": "Email not configured",
+      "toastDescription": "The email service is not configured yet. Please reach out through LinkedIn or GitHub."
+    },
+    "location": {
+      "title": "Location",
+      "city": "Curitiba, Paraná, Brazil",
+      "availability": "Available for remote work worldwide. Open to relocation for the right opportunity."
+    },
+    "tip": "Tip:",
+    "tipText": "I usually respond within 24 hours. For urgent matters, reach out on LinkedIn or Twitter."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or has been moved.",
+    "backHome": "Back to Home"
+  }
+}
