@@ -104,41 +104,6 @@
     @apply bg-primary/30 text-foreground;
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    :root {
-      --theme-transition: background-color 300ms ease, border-color 300ms ease,
-        color 300ms ease, fill 300ms ease, stroke 300ms ease,
-        box-shadow 300ms ease;
-    }
-
-    html,
-    body,
-    header,
-    main,
-    section,
-    article,
-    aside,
-    nav,
-    div,
-    span,
-    p,
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6,
-    a,
-    button,
-    input,
-    textarea,
-    select,
-    label,
-    code,
-    pre {
-      transition: var(--theme-transition);
-    }
-  }
 }
 
 @layer utilities {
