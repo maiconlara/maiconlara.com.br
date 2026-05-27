@@ -46,12 +46,13 @@ export const CareerItems = () => {
   ];
 
   return (
-    <section className="grid md:grid-cols-2 gap-6 items-stretch">
+    <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 auto-rows-fr">
       <AnimatedCard
         to={`/${locale}/about`}
         title={cards.about.title}
         description={cards.about.description}
         delay={0.2}
+        containterClassName="lg:col-span-3"
       >
         <div className="space-y-3 mt-4">
           {careerItems.map((item, index) => (
@@ -62,9 +63,9 @@ export const CareerItems = () => {
               transition={{ delay: 0.4 + index * 0.1 }}
               className="flex items-center gap-3 text-sm"
             >
-              <item.icon className="w-4 h-4 text-primary" />
-              <span className="text-foreground">{item.title}</span>
-              <span className="text-muted-foreground text-xs ml-auto">
+              <item.icon className="w-4 h-4 text-primary shrink-0" />
+              <span className="text-foreground truncate">{item.title}</span>
+              <span className="text-muted-foreground text-xs ml-auto shrink-0">
                 {item.date}
               </span>
             </motion.div>
@@ -77,16 +78,16 @@ export const CareerItems = () => {
         title={cards.projects.title}
         description={cards.projects.description}
         delay={0.3}
-        containterClassName="row-span-2"
+        containterClassName="lg:col-span-2"
       >
-        <div className="flex gap-2 mt-4">
+        <div className="flex h-full w-full flex-col gap-2 ">
           {OUT_OF_GITHUB_REPOS.slice(0, 2).map((project, index) => (
             <motion.div
               key={project.id}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 + index * 0.1 }}
-              className="flex-1 h-24 rounded-lg bg-card border border-border p-3 flex flex-col justify-between overflow-hidden"
+              className=" rounded-lg bg-card border border-border justify-between p-3 flex flex-col overflow-hidden"
             >
               <div className="flex items-center gap-1.5">
                 <span
@@ -110,40 +111,6 @@ export const CareerItems = () => {
           ))}
         </div>
       </AnimatedCard>
-
-      <div className="grid grid-cols-3 gap-6">
-        <AnimatedCard
-          to={`/${locale}/about/stack`}
-          title={cards.stack.title}
-          description={cards.stack.description}
-          delay={0.4}
-          containterClassName="col-span-2"
-        >
-          <div className="flex gap-2 mt-4 flex-wrap">
-            {["Next.js", "TypeScript", "React", "Node.js"].map((tech) => (
-              <span
-                key={tech}
-                className="px-2 py-1 rounded-md bg-secondary text-xs text-muted-foreground"
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
-        </AnimatedCard>
-
-        <AnimatedCard
-          to={`/${locale}/contact`}
-          title={cards.contact.title}
-          description={cards.contact.description}
-          delay={0.6}
-          containterClassName="col-span-1"
-        >
-          <div className="flex items-center gap-2 mt-4 text-primary">
-            <span className="text-sm">{cards.contact.cta}</span>
-            <RiArrowRightLine className="w-4 h-4" />
-          </div>
-        </AnimatedCard>
-      </div>
     </section>
   );
 };
