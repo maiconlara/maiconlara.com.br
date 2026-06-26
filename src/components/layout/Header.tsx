@@ -3,10 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import Image from "next/image";
 
 import { cn } from "@/lib/utils";
-import logo from "@/assets/logo.png";
 import { useDictionary, useLocale } from "@/i18n/dictionary-context";
 import { LanguageSwitcher } from "./language-switcher";
 import { ThemeToggle } from "./theme-toggle";
@@ -33,19 +31,6 @@ export function Header() {
       className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-background/80 border-b border-border/50"
     >
       <div className="container flex items-center justify-between h-16">
-        <Link
-          href={localePrefix}
-          className="font-semibold text-lg hover:text-primary transition-colors"
-        >
-          <Image
-            src={logo}
-            className="inline-block w-auto h-9 rounded-xl"
-            alt="Maicon Lara"
-            width={36}
-            height={36}
-          />
-        </Link>
-
         <nav className="flex items-center gap-4 sm:gap-6">
           {navItems.map((item) => {
             const href = `${localePrefix}${item.path}`;
@@ -78,12 +63,12 @@ export function Header() {
               </Link>
             );
           })}
-
-          <div className="flex items-center gap-1">
-            <ThemeToggle />
-            <LanguageSwitcher />
-          </div>
         </nav>
+
+        <div className="flex items-center gap-1">
+          <ThemeToggle />
+          <LanguageSwitcher />
+        </div>
       </div>
     </motion.header>
   );
