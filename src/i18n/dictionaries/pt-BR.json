@@ -159,24 +159,14 @@
     "title": "Vamos nos conectar!",
     "subtitle": "Tem um projeto em mente ou só quer bater um papo? Eu adoraria ouvir você. Sinta-se à vontade para entrar em contato pelos canais abaixo.",
     "back": "Voltar",
-    "form": {
-      "name": "Nome",
-      "namePlaceholder": "Seu nome",
-      "email": "E-mail",
-      "emailPlaceholder": "seu@email.com",
-      "message": "Mensagem",
-      "messagePlaceholder": "Sua mensagem...",
-      "send": "Enviar mensagem",
-      "toastTitle": "E-mail não configurado",
-      "toastDescription": "O serviço de e-mail ainda não está configurado. Por favor, entre em contato pelo LinkedIn ou GitHub."
-    },
+    "emailNote": "A forma mais rápida de falar comigo",
     "location": {
       "title": "Localização",
       "city": "Curitiba, Paraná, Brasil",
       "availability": "Disponível para trabalho remoto em qualquer lugar do mundo. Aberto a relocação para a oportunidade certa."
     },
     "tip": "Dica:",
-    "tipText": "Normalmente respondo em até 24 horas. Para assuntos urgentes, fale comigo pelo LinkedIn ou Twitter."
+    "tipText": "Normalmente respondo em até 24 horas. Para assuntos urgentes, fale comigo pelo LinkedIn."
   },
   "notFound": {
     "title": "Página não encontrada",

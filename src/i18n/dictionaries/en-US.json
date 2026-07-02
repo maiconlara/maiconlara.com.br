@@ -159,24 +159,14 @@
     "title": "Let's Connect!",
     "subtitle": "Have a project in mind or just want to chat? I'd love to hear from you. Feel free to reach out through any of the channels below.",
     "back": "Back",
-    "form": {
-      "name": "Name",
-      "namePlaceholder": "Your name",
-      "email": "Email",
-      "emailPlaceholder": "your@email.com",
-      "message": "Message",
-      "messagePlaceholder": "Your message...",
-      "send": "Send Message",
-      "toastTitle": "Email not configured",
-      "toastDescription": "The email service is not configured yet. Please reach out through LinkedIn or GitHub."
-    },
+    "emailNote": "The fastest way to reach me",
     "location": {
       "title": "Location",
       "city": "Curitiba, Paraná, Brazil",
       "availability": "Available for remote work worldwide. Open to relocation for the right opportunity."
     },
     "tip": "Tip:",
-    "tipText": "I usually respond within 24 hours. For urgent matters, reach out on LinkedIn or Twitter."
+    "tipText": "I usually respond within 24 hours. For urgent matters, reach out on LinkedIn."
   },
   "notFound": {
     "title": "Page not found",

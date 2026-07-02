@@ -2,8 +2,7 @@ import Link from "next/link";
 import { RiArrowLeftLine } from "@remixicon/react";
 import type { Metadata } from "next";
 
-import { ContactForm } from "@/components/contact/contact-form";
-import { Social } from "@/components/contact/social";
+import { ContactChannels } from "@/components/contact/contact-channels";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { isLocale, type Locale } from "@/i18n/config";
 
@@ -26,8 +25,8 @@ export default async function ContactPage({ params }: PageProps) {
   const dict = await getDictionary(locale as Locale);
 
   return (
-    <div className="container pb-16 md:pb-0 pt-10">
-      <div className="mb-12">
+    <div className="container pb-16 md:pb-24 pt-10">
+      <div className="mb-10 md:mb-12">
         <Link
           href={`/${locale}`}
           className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8"
@@ -36,18 +35,15 @@ export default async function ContactPage({ params }: PageProps) {
           {dict.contact.back}
         </Link>
 
-        <h1 className="text-3xl md:text-4xl font-bold mb-4">
+        <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
           {dict.contact.title}
         </h1>
-        <p className="text-muted-foreground max-w-2xl">
+        <p className="text-muted-foreground max-w-2xl leading-relaxed">
           {dict.contact.subtitle}
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-12">
-        <ContactForm />
-        <Social />
-      </div>
+      <ContactChannels />
     </div>
   );
 }
